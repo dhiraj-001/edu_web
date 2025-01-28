@@ -5,7 +5,8 @@ import Header from './Component/Hearder';
 import Event from './Component/Event';
 import Login from './Component/Login';
 import Home from './Component/Home';
-
+import Footer from './Component/Footer';
+import Milestone from './Component/Milestone';
 function App() {
   const [count, setCount] = useState(0);
 
@@ -18,6 +19,8 @@ function App() {
           <Route path="/event" element={<Event />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/milestone" element={<Milestone />} />
+          <Route path="/footer" element={<Footer />} />
         </Routes>
       </Router>
     </>

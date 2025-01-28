@@ -3,6 +3,7 @@ import '../CSS/Home.css';
 import benner from '../view/benner.jpg';
 import Event from './Event';
 import Milestone from './Milestone';
+import Footer from './Footer';
 
 const Home = () => {
   return (
@@ -27,6 +28,7 @@ const Home = () => {
       </div>
       <Event />
       <Milestone />
+      <Footer />
     </>
   );
 };
