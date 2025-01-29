@@ -1,18 +1,21 @@
 footer {
   display: flex;
   justify-content: space-between;
-  padding: 2% 5% 2% 5%;
+  flex-wrap: wrap; /* Allows wrapping for smaller screens */
+  padding: 2% 5%;
   background-color: #2d3e37;
   color: #fff;
   margin-top: 3%;
 }
 
+/* Footer sections */
 .footer-left,
 .footer-center,
 .footer-right {
   width: 30%;
 }
 
+/* Text Styling */
 .h1 {
   font-size: 1.8rem;
   color: #fff;
@@ -25,6 +28,7 @@ footer {
   color: #f6f2f2;
 }
 
+/* Social Icons */
 .social-icons {
   margin-top: 20px;
 }
@@ -40,7 +44,24 @@ footer {
   color: #4c8c7a;
 }
 
+/* Icon Styling for Contact Info */
 footer .footer-center p i,
 footer .footer-left p i {
   margin-right: 10px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-left,
+  .footer-center,
+  .footer-right {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 }
