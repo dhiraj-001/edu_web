@@ -37,7 +37,9 @@ h1 {
     flex-direction: column;
     align-items: center;
   }
-
+  .containerE {
+    padding: 0;
+  }
   .box {
     width: 300px; /* Ensures box takes full width */
     max-width: none; /* Removes max-width restriction */
