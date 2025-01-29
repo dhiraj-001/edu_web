@@ -39,7 +39,7 @@ h1 {
   }
 
   .box {
-    width: 350px; /* Ensures box takes full width */
+    width: 300px; /* Ensures box takes full width */
     max-width: none; /* Removes max-width restriction */
   }
 }
