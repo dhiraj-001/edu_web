@@ -35,7 +35,7 @@ const SignUp = () => {
     onSubmit: async (values) => {
       try {
         const response = await axios.post(
-          'http://localhost:5000/user/register',
+          'https://mc-qweb-backend.vercel.app/user/register',
           {
             name: values.username,
             email: values.email,

@@ -23,7 +23,7 @@ const Header = () => {
     try {
       // Make a request to the backend to verify the token (you should have an endpoint for this)
       const response = await axios.post(
-        'http://localhost:5000/user/verify-token',
+        'https://mc-qweb-backend.vercel.app/user/verify-token',
         {
           token,
         }
