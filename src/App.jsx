@@ -7,13 +7,17 @@ import Login from './Component/Login';
 import Home from './Component/Home';
 import Footer from './Component/Footer';
 import Milestone from './Component/Milestone';
+import AdminLogin from './Component/AdminLogin';
+import Admin from './Component/Admin';
+import Userprofile from './Component/Userprofile';
+
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
       <Router>
-        <Header />
+        {/* <Header /> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/event" element={<Event />} />
@@ -21,6 +25,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/milestone" element={<Milestone />} />
           <Route path="/footer" element={<Footer />} />
+          <Route path="/adminlogin" element={<AdminLogin />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/userprofile" element={<Userprofile />} />
         </Routes>
       </Router>
     </>

@@ -4,10 +4,12 @@ import benner from '../view/benner.jpg';
 import Event from './Event';
 import Milestone from './Milestone';
 import Footer from './Footer';
+import Header from './Hearder';
 
 const Home = () => {
   return (
     <>
+      <Header />
       <div className="container">
         <div className="content">
           <h1>Multiple Choice Questions</h1>

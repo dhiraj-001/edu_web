@@ -1,3 +1,9 @@
 * {
   margin: 0;
 }
+a {
+  color: #31473a;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}

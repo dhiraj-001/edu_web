@@ -7,22 +7,51 @@ import {
   Container,
   Paper,
 } from '@mui/material';
+import axios from 'axios';
+import Cookies from 'js-cookie'; // Import Cookies to store the token
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  const [serverMessage, setServerMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add login logic here
-    console.log(formData);
+
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/user/login', // Replace with your actual API endpoint
+        {
+          email: formData.email,
+          password: formData.password,
+        }
+      );
+
+      // Store the JWT token in cookies
+      Cookies.set('auth_token', response.data.token, { expires: 1 }); // Store token for 1 day
+
+      setServerMessage({
+        type: 'success',
+        text: 'Login successful! Redirecting...',
+      });
+
+      // Redirect to the home page or dashboard
+      setTimeout(() => {
+        window.location.href = '/'; // Replace with the route where you want to redirect
+      }, 2000);
+    } catch (err) {
+      setServerMessage({
+        type: 'error',
+        text: err.response?.data?.error || 'Login failed. Please try again.',
+      });
+    }
   };
 
   return (
@@ -31,10 +60,22 @@ const Login = () => {
         <Typography variant="h4" gutterBottom align="center">
           Login
         </Typography>
+
+        {serverMessage && (
+          <Typography
+            color={serverMessage.type === 'error' ? 'error' : 'primary'}
+            align="center"
+            sx={{ mb: 2 }}
+          >
+            {serverMessage.text}
+          </Typography>
+        )}
+
         <form onSubmit={handleSubmit}>
           <TextField
             label="Email"
             name="email"
+            type="email"
             value={formData.email}
             onChange={handleChange}
             fullWidth
@@ -55,11 +96,8 @@ const Login = () => {
             Login
           </Button>
         </form>
-        <Typography
-          variant="body1"
-          sx={{ margin: '20px' }} // Adds 20px margin around the paragraph
-        >
-          don't have aecount <a href="./signup">Sign up</a>
+        <Typography variant="body1" sx={{ margin: '10px' }} align="center">
+          Don’t have an account? <a href="./signup">Sign up</a>
         </Typography>
       </Paper>
     </Container>
