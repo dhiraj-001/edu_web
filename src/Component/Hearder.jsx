@@ -64,13 +64,20 @@ const Header = () => {
         {isLoggedIn ? (
           <>
             <button>
-              <a href="/userprofile">
-                <i className="fas fa-user-circle"></i> Profile
-              </a>
+              <a href="/userprofile">Profile</a>
             </button>
             <button>
-              <p onClick={handleLogout} className="logout-btn">
-                <i className="fas fa-sign-out-alt"></i> Logout
+              <p
+                onClick={handleLogout}
+                className="logout-btn"
+                style={{
+                  color: 'white',
+                  textdecoration: 'none',
+                  fontWeight: 'bolder',
+                  transition: 'color 0.3s ease',
+                }}
+              >
+                Logout
               </p>
             </button>
           </>

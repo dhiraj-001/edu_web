@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Cookies from 'js-cookie'; // Import js-cookie for token handling
+import Cookies from 'js-cookie';
 
 const AddQuestion = () => {
   const { id } = useParams(); // Get course ID from URL
@@ -28,56 +28,26 @@ const AddQuestion = () => {
     correctOption: '',
   });
   const [message, setMessage] = useState('');
-  const [questions, setQuestions] = useState([]);
   const [subjectName, setSubjectName] = useState('');
-  const [isTokenValid, setIsTokenValid] = useState(false);
+  const [questions, setQuestions] = useState(
+    JSON.parse(localStorage.getItem('tempQuestions')) || [] // Retrieve from local storage
+  );
 
   useEffect(() => {
-    verifyToken();
+    fetchCourseData();
+    // Fetch the questions from localStorage whenever the component mounts or updates
+    const savedQuestions =
+      JSON.parse(localStorage.getItem('tempQuestions')) || [];
+    setQuestions(savedQuestions);
   }, []);
 
-  useEffect(() => {
-    if (isTokenValid) {
-      fetchCourseData();
-    }
-  }, [isTokenValid]);
-
-  // Check if the admin token is valid
-  const verifyToken = async () => {
-    const token = Cookies.get('admin_token');
-    if (!token) {
-      setIsTokenValid(false);
-      navigate('/'); // Redirect to home if no token
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        'https://mc-qweb-backend.vercel.app/user/verify-tokenadmin',
-        { token }
-      );
-
-      if (response.data.valid) {
-        setIsTokenValid(true); // Valid token
-      } else {
-        setIsTokenValid(false);
-        navigate('/'); // Redirect to home if token is invalid
-      }
-    } catch (error) {
-      console.error('Error verifying token:', error);
-      setIsTokenValid(false);
-      navigate('/'); // Redirect to home on error
-    }
-  };
-
-  // Fetch course data and existing questions if the token is valid
+  // Fetch course data if token is valid
   const fetchCourseData = async () => {
     try {
       const response = await axios.get(
         `https://mc-qweb-backend.vercel.app/user/course/${id}`
       );
-      setSubjectName(response.data.name); // Assuming the course object contains the name
-      setQuestions(response.data.questions); // Assuming course data includes questions array
+      setSubjectName(response.data.name);
     } catch (error) {
       console.error('Error fetching course data:', error);
     }
@@ -90,9 +60,8 @@ const AddQuestion = () => {
     setFormData({ ...formData, options: updatedOptions });
   };
 
-  // Submit question to the API
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // Save the question temporarily to localStorage
+  const handleAddToLocal = () => {
     const { question, options, correctOption } = formData;
 
     if (!question || options.some((opt) => !opt) || !correctOption) {
@@ -100,36 +69,52 @@ const AddQuestion = () => {
       return;
     }
 
+    const newQuestion = {
+      question,
+      options,
+      correctOption,
+    };
+
+    const updatedQuestions = [...questions, newQuestion];
+    setQuestions(updatedQuestions);
+    localStorage.setItem('tempQuestions', JSON.stringify(updatedQuestions)); // Save to localStorage
+
+    setFormData({
+      question: '',
+      options: ['', '', '', ''],
+      correctOption: '',
+    });
+    setMessage('Question added to temporary list!');
+  };
+
+  // Submit all stored questions to the backend
+  const handleFinalSubmit = async () => {
+    if (questions.length === 0) {
+      setMessage('No questions to submit!');
+      return;
+    }
+
     try {
       const response = await axios.post(
         `https://mc-qweb-backend.vercel.app/user/course/${id}/add-question`,
-        formData
+        { questions }
       );
-      setQuestions([...questions, response.data.question]);
-      setMessage('Question added successfully!');
-      setFormData({
-        question: '',
-        options: ['', '', '', ''],
-        correctOption: '',
-      });
+      console.log(questions);
+      setMessage('All questions submitted successfully!');
+      // Clear local storage after successful submission
+      localStorage.removeItem('tempQuestions');
+      setQuestions([]);
     } catch (error) {
-      setMessage('Error adding question.');
+      setMessage('Error submitting questions.');
       console.error(error);
     }
   };
 
-  // Delete question
-  const handleDeleteQuestion = async (questionId) => {
-    try {
-      await axios.delete(
-        `https://mc-qweb-backend.vercel.app/user/course/${id}/delete-question/${questionId}`
-      );
-      setQuestions(questions.filter((q) => q._id !== questionId));
-      setMessage('Question deleted successfully!');
-    } catch (error) {
-      setMessage('Error deleting question.');
-      console.error(error);
-    }
+  // Handle delete question from local storage
+  const handleDeleteQuestion = (index) => {
+    const updatedQuestions = questions.filter((_, i) => i !== index); // Filter out the deleted question
+    setQuestions(updatedQuestions); // Update state
+    localStorage.setItem('tempQuestions', JSON.stringify(updatedQuestions)); // Update localStorage
   };
 
   return (
@@ -144,7 +129,7 @@ const AddQuestion = () => {
         Add New Question
       </Typography>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <TextField
           fullWidth
           label="Question"
@@ -185,16 +170,16 @@ const AddQuestion = () => {
 
         {message && <Typography color="error">{message}</Typography>}
 
-        <Button type="submit" variant="contained" fullWidth>
-          Save Question
+        <Button variant="contained" onClick={handleAddToLocal} fullWidth>
+          Add to Temporary List
         </Button>
       </form>
 
-      {/* Table to display existing questions */}
+      {/* Table to display temporary questions */}
       {questions.length > 0 && (
         <Box sx={{ marginBottom: '20px', marginTop: '40px' }}>
           <Typography variant="h5" gutterBottom>
-            Existing Questions
+            Temporary Questions
           </Typography>
           <TableContainer component={Paper}>
             <Table>
@@ -207,8 +192,8 @@ const AddQuestion = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {questions.map((q) => (
-                  <TableRow key={q._id}>
+                {questions.map((q, index) => (
+                  <TableRow key={index}>
                     <TableCell>{q.question}</TableCell>
                     <TableCell>
                       <ul>
@@ -221,7 +206,7 @@ const AddQuestion = () => {
                     <TableCell>
                       <IconButton
                         color="error"
-                        onClick={() => handleDeleteQuestion(q._id)}
+                        onClick={() => handleDeleteQuestion(index)} // Delete action
                       >
                         <DeleteIcon />
                       </IconButton>
@@ -233,6 +218,17 @@ const AddQuestion = () => {
           </TableContainer>
         </Box>
       )}
+
+      {/* Final Submit Button */}
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleFinalSubmit}
+        disabled={questions.length === 0}
+        fullWidth
+      >
+        Final Submit
+      </Button>
     </Box>
   );
 };

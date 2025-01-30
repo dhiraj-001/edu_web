@@ -8,6 +8,8 @@ import {
   Typography,
   CircularProgress,
 } from '@mui/material';
+import Cookies from 'js-cookie';
+import axios from 'axios'; // ✅ Import axios
 
 const ViewQuestionUser = () => {
   const { categoryId } = useParams();
@@ -19,35 +21,28 @@ const ViewQuestionUser = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = Cookies.get('auth_token');
     if (!token) {
       console.warn('User is not logged in. Redirecting to login page...');
       navigate('/login', { replace: true });
       return;
     }
 
-    // Verify token first
+    // ✅ Verify token first
     const verifyToken = async () => {
       try {
-        const response = await fetch(
+        const response = await axios.post(
           'https://mc-qweb-backend.vercel.app/user/verify-token',
-          {
-            method: 'POST', // Assuming POST for token verification
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          }
+          { token }
         );
 
-        const data = await response.json();
-        if (!response.ok || !data.valid) {
+        if (!response.data.valid) {
           console.warn('Invalid token. Redirecting to login...');
           navigate('/login', { replace: true });
           return;
         }
 
-        // If token is valid, fetch questions
+        // ✅ If token is valid, fetch questions
         fetchQuestions();
       } catch (error) {
         console.error('Error verifying token:', error);
@@ -56,27 +51,25 @@ const ViewQuestionUser = () => {
       }
     };
 
-    // Fetch questions after token verification
+    // ✅ Fetch questions after token verification
     const fetchQuestions = async () => {
       try {
         console.log(
           'Fetching from:',
           `https://mc-qweb-backend.vercel.app/user/course/${categoryId}`
         );
-        const response = await fetch(
+        const response = await axios.get(
           `https://mc-qweb-backend.vercel.app/user/course/${categoryId}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
 
-        if (!response.ok) throw new Error('Failed to fetch questions');
+        if (response.status !== 200)
+          throw new Error('Failed to fetch questions');
 
-        const data = await response.json();
-        console.log('Fetched questions:', data);
-        setQuestions(data.questions);
+        console.log('Fetched questions:', response.data);
+        setQuestions(response.data.questions);
       } catch (error) {
         console.error('Error fetching questions:', error);
         setError(error.message);
@@ -85,7 +78,7 @@ const ViewQuestionUser = () => {
       }
     };
 
-    verifyToken(); // Verify token on component mount
+    verifyToken(); // ✅ Verify token on component mount
   }, [categoryId, navigate]);
 
   if (loading) {
