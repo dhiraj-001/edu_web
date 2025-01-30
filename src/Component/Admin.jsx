@@ -1,131 +1,205 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography, Divider, TextField } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Cookies from 'js-cookie'; // Import js-cookie for handling cookies
 
-const AdminPage = () => {
-  const [selectedContent, setSelectedContent] = useState(''); // State to handle selected content
-  const [isAdding, setIsAdding] = useState(false); // State to handle showing input field for adding course
-  const [newCourse, setNewCourse] = useState(''); // State to handle the new course input value
+const Admin = () => {
+  const [selectedContent, setSelectedContent] = useState('');
+  const [isAdding, setIsAdding] = useState(false);
+  const [newItem, setNewItem] = useState('');
+  const [data, setData] = useState([]);
+  const [isTokenValid, setIsTokenValid] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    verifyToken();
+  }, []);
+
+  useEffect(() => {
+    if (selectedContent) {
+      fetchData();
+    }
+  }, [selectedContent]);
+
+  const verifyToken = async () => {
+    const token = Cookies.get('admin_token'); // Get token from cookie
+
+    if (!token) {
+      setIsTokenValid(false);
+      navigate('/'); // Redirect to home page if no token
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        'https://mc-qweb-backend.vercel.app/user/verify-tokenadmin', // Endpoint to verify token
+        { token }
+      );
+
+      if (response.data.valid) {
+        setIsTokenValid(true);
+      } else {
+        setIsTokenValid(false);
+        navigate('/'); // Redirect to home page if token is invalid
+      }
+    } catch (error) {
+      console.error('Error verifying token:', error);
+      setIsTokenValid(false);
+      navigate('/'); // Redirect to home page on error
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `https://mc-qweb-backend.vercel.app/user/admin/${selectedContent}`
+      );
+      setData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   const handleButtonClick = (content) => {
     setSelectedContent(content);
-    setIsAdding(false); // Reset input when switching between sections
-    setNewCourse(''); // Reset input field value
+    setIsAdding(false);
+    setNewItem('');
   };
 
-  const handleAddNewClick = () => {
-    setIsAdding(true); // Show input field for adding new course
-  };
-
-  const handleInputChange = (event) => {
-    setNewCourse(event.target.value); // Update course name input value
-  };
-
-  const handleSaveNewCourse = () => {
-    if (newCourse.trim()) {
-      // Here, you would save the new course (e.g., make an API call)
-      console.log('New Course added:', newCourse);
-      setIsAdding(false); // Hide input field after saving
-      setNewCourse(''); // Clear input field
+  const handleAddNew = async () => {
+    if (newItem.trim()) {
+      try {
+        await axios.post(
+          `https://mc-qweb-backend.vercel.app/user/admin/${selectedContent}`,
+          { name: newItem }
+        );
+        setNewItem('');
+        setIsAdding(false);
+        fetchData();
+      } catch (error) {
+        console.error('Error adding item:', error);
+      }
     }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(
+        `https://mc-qweb-backend.vercel.app/user/admin/${selectedContent}/${id}`
+      );
+      fetchData();
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  };
+
+  const handleAddQuestion = (id) => {
+    navigate(`/addquestionpage/${id}`);
   };
 
   return (
     <Box sx={{ display: 'flex', height: '100vh' }}>
-      {/* Left Navigation */}
       <Box sx={{ width: '200px', backgroundColor: '#f4f4f4', padding: '16px' }}>
-        <Button
-          fullWidth
-          variant="contained"
-          onClick={() => handleButtonClick('event')}
-          sx={{ marginBottom: '8px' }}
-        >
-          Event
-        </Button>
-        <Button
-          fullWidth
-          variant="contained"
-          onClick={() => handleButtonClick('milestone')}
-          sx={{ marginBottom: '8px' }}
-        >
-          Milestone
-        </Button>
-        <Button
-          fullWidth
-          variant="contained"
-          onClick={() => handleButtonClick('course')}
-          sx={{ marginBottom: '8px' }}
-        >
-          Course
-        </Button>
+        <h1>Admin Page</h1>
+        {['event', 'milestone', 'course'].map((section) => (
+          <Button
+            key={section}
+            fullWidth
+            variant="contained"
+            onClick={() => handleButtonClick(section)}
+            sx={{ marginBottom: '8px', marginTop: '12px' }}
+          >
+            {section.charAt(0).toUpperCase() + section.slice(1)}
+          </Button>
+        ))}
       </Box>
 
-      {/* Right Content */}
       <Box sx={{ flex: 1, padding: '16px' }}>
-        {selectedContent === 'course' && (
+        {isTokenValid && selectedContent && (
           <div>
-            <Typography variant="h4">Course</Typography>
+            <Typography variant="h4" sx={{ textTransform: 'capitalize' }}>
+              {selectedContent}
+            </Typography>
             <Divider sx={{ margin: '16px 0' }} />
-            <Typography variant="body1">Here are your courses:</Typography>
 
-            {/* "Add New" Button */}
-            {!isAdding && (
+            {data.length > 0 ? (
+              data.map((item) => (
+                <Box
+                  key={item._id}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '8px',
+                    borderBottom: '1px solid #ddd',
+                  }}
+                >
+                  <Typography>{item.name}</Typography>
+                  <Box>
+                    {selectedContent === 'course' && (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{ marginRight: '8px' }}
+                        onClick={() => handleAddQuestion(item._id)}
+                      >
+                        Add Question
+                      </Button>
+                    )}
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      onClick={() => handleDelete(item._id)}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+                </Box>
+              ))
+            ) : (
+              <Typography>No {selectedContent} added yet.</Typography>
+            )}
+
+            {!isAdding ? (
               <Button
                 variant="contained"
                 sx={{ marginTop: '16px' }}
-                onClick={handleAddNewClick}
+                onClick={() => setIsAdding(true)}
               >
-                Add New Course
+                Add New {selectedContent}
               </Button>
-            )}
-
-            {/* Input Field for New Course */}
-            {isAdding && (
-              <div>
+            ) : (
+              <Box>
                 <TextField
-                  label="Course Name"
+                  label={`New ${selectedContent} Name`}
                   variant="outlined"
                   fullWidth
-                  value={newCourse}
-                  onChange={handleInputChange}
+                  value={newItem}
+                  onChange={(e) => setNewItem(e.target.value)}
                   sx={{ marginTop: '16px' }}
                 />
                 <Button
                   variant="contained"
                   sx={{ marginTop: '16px' }}
-                  onClick={handleSaveNewCourse}
+                  onClick={handleAddNew}
                 >
-                  Save Course
+                  Save {selectedContent}
                 </Button>
-              </div>
+              </Box>
             )}
           </div>
         )}
 
-        {selectedContent === 'event' && (
-          <div>
-            <Typography variant="h4">Event</Typography>
-            <Divider sx={{ margin: '16px 0' }} />
-            <Typography variant="body1">Already added events:</Typography>
-            <Button variant="contained" sx={{ marginTop: '16px' }}>
-              Add New Event
-            </Button>
-          </div>
-        )}
-
-        {selectedContent === 'milestone' && (
-          <div>
-            <Typography variant="h4">Milestone</Typography>
-            <Divider sx={{ margin: '16px 0' }} />
-            <Typography variant="body1">Already added milestones:</Typography>
-            <Button variant="contained" sx={{ marginTop: '16px' }}>
-              Add New Milestone
-            </Button>
-          </div>
-        )}
-
-        {!selectedContent && (
+        {!selectedContent && isTokenValid && (
           <Typography variant="body1">
             Please select an option from the left menu.
+          </Typography>
+        )}
+
+        {!isTokenValid && (
+          <Typography variant="body1" color="error">
+            Invalid or expired token. Redirecting to home...
           </Typography>
         )}
       </Box>
@@ -133,4 +207,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default Admin;

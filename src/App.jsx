@@ -10,6 +10,9 @@ import Milestone from './Component/Milestone';
 import AdminLogin from './Component/AdminLogin';
 import Admin from './Component/Admin';
 import Userprofile from './Component/Userprofile';
+import Addquation from './Component/AddQuation';
+import Course from './Component/Course';
+import Viewquationuser from './Component/ViewQuationUser';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -28,6 +31,12 @@ function App() {
           <Route path="/adminlogin" element={<AdminLogin />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/userprofile" element={<Userprofile />} />
+          <Route path="/addquestionpage/:id" element={<Addquation />} />
+          <Route path="/course" element={<Course />} />
+          <Route
+            path="/coursequation/:categoryId"
+            element={<Viewquationuser />}
+          />
         </Routes>
       </Router>
     </>

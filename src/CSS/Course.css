@@ -1,0 +1,105 @@
+/* Course.css */
+
+/* Container for the entire page */
+.course-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Title Style */
+.title {
+  font-weight: bold;
+  color: #31473a;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+/* Container for loading state */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Container for error state */
+.error-container {
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Retry button style */
+.retry-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #31473a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Grid layout for the course cards */
+.course-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: #31473a 2px solid;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  height: auto;
+  width: 100%;
+}
+
+/* Content within each card */
+.card-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  width: 300px;
+}
+
+/* Course name styling */
+.course-name {
+  font-weight: bold;
+  width: 300px;
+}
+
+/* Link inside course name */
+.course-link {
+  text-decoration: none;
+  color: #31473a;
+  font-weight: bold;
+}
+
+.course-link:hover {
+  color: #31473a;
+}
+
+/* Responsive design for small screens */
+@media (max-width: 600px) {
+  .course-container {
+    padding: 0;
+  }
+
+  .course-card {
+    width: 100%; /* Full width on small screens */
+    max-width: none;
+  }
+
+  .card-content {
+    width: 100%;
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import Axios
+import Cookies from 'js-cookie'; // Import js-cookie
 import {
   Container,
   Box,
@@ -14,12 +15,10 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      // Send a POST request to the backend login API
       const response = await axios.post(
         'https://mc-qweb-backend.vercel.app/user/adminlogin',
         {
@@ -31,8 +30,8 @@ const AdminLogin = () => {
       // Handle success (token received)
       if (response.data.success) {
         console.log('Login successful');
-        // Store the token (you can store it in localStorage or a state management solution)
-        localStorage.setItem('admin_token', response.data.token);
+        // Store the token in a cookie
+        Cookies.set('admin_token', response.data.token, { expires: 1 }); // Cookie will expire in 1 day
         setTimeout(() => {
           window.location.href = '/admin'; // Replace with the route where you want to redirect
         }, 2000);

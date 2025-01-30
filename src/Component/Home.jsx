@@ -5,6 +5,7 @@ import Event from './Event';
 import Milestone from './Milestone';
 import Footer from './Footer';
 import Header from './Hearder';
+import Course from './Course';
 
 const Home = () => {
   return (
@@ -28,6 +29,7 @@ const Home = () => {
           <img src={benner} />
         </div>
       </div>
+      <Course />
       <Event />
       <Milestone />
       <Footer />
