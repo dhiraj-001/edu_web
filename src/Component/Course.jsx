@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Import Link for proper navigation
+import { Link } from 'react-router-dom';
 import {
   Grid,
   Card,
@@ -8,7 +8,6 @@ import {
   CircularProgress,
   Container,
 } from '@mui/material';
-import '../CSS/Course.css'; // Import the CSS file
 
 const Course = () => {
   const [courses, setCourses] = useState([]);
@@ -21,26 +20,26 @@ const Course = () => {
       try {
         const response = await fetch(
           'https://mc-qweb-backend.vercel.app/user/admin/course'
-        ); // Replace with your API endpoint
+        );
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
         const data = await response.json();
-        setCourses(data); // Set the fetched data to state
+        setCourses(data);
       } catch (error) {
-        setError(error.message); // Set error message if something goes wrong
+        setError(error.message);
       } finally {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, []); // Empty dependency array means this runs once on component mount
+  }, []);
 
   // Display loading or error messages
   if (loading) {
     return (
-      <Container className="loading-container">
+      <Container style={styles.loadingContainer}>
         <CircularProgress />
       </Container>
     );
@@ -48,12 +47,12 @@ const Course = () => {
 
   if (error) {
     return (
-      <Container className="error-container">
+      <Container style={styles.errorContainer}>
         <Typography variant="h6" color="error">
           Error: {error}
         </Typography>
         <button
-          className="retry-button"
+          style={styles.retryButton}
           onClick={() => window.location.reload()}
         >
           Retry
@@ -63,24 +62,30 @@ const Course = () => {
   }
 
   return (
-    <Container className="course-container">
-      <h1 variant="h4" align="center" className="title">
-        Courses
-      </h1>
+    <Container style={styles.courseContainer}>
+      <h1 style={styles.title}>Courses</h1>
 
-      <Grid container spacing={3}>
+      {/* Centering the course list properly */}
+      <Grid container spacing={3} style={styles.centerGrid}>
         {courses.map((course) => (
-          <Grid item key={course._id} xs={12} sm={6} md={4}>
-            <Card className="course-card">
-              <CardContent className="card-content">
+          <Grid
+            item
+            key={course._id}
+            xs={12}
+            sm={6}
+            md={4}
+            style={styles.centerGridItem}
+          >
+            <Card style={styles.courseCard}>
+              <CardContent style={styles.cardContent}>
                 <Typography
                   variant="h5"
                   component="div"
-                  className="course-name"
+                  style={styles.courseName}
                 >
                   <Link
-                    to={`/coursequation/${course._id}`}
-                    className="course-link"
+                    to={`/viewsubject/${course._id}`}
+                    style={styles.courseLink}
                   >
                     {course.name}
                   </Link>
@@ -92,6 +97,73 @@ const Course = () => {
       </Grid>
     </Container>
   );
+};
+
+// Inline Styles
+const styles = {
+  courseContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center', // Centers the whole course section
+    justifyContent: 'center',
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  title: {
+    marginBottom: 20,
+  },
+  centerGrid: {
+    display: 'flex',
+    justifyContent: 'center', // Centers the entire grid
+  },
+  centerGridItem: {
+    display: 'flex',
+    justifyContent: 'center', // Centers individual grid items
+  },
+  courseCard: {
+    width: 250, // Fixed width to keep it centered
+    height: 100,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    backgroundColor: '#f5f5f5',
+    transition: 'transform 0.2s ease-in-out',
+  },
+  cardContent: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  courseName: {
+    fontSize: '1.6rem',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  courseLink: {
+    textDecoration: 'none',
+    color: '#333',
+  },
+  loadingContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100vh',
+  },
+  errorContainer: {
+    textAlign: 'center',
+    marginTop: 50,
+  },
+  retryButton: {
+    marginTop: 10,
+    padding: '10px 15px',
+    backgroundColor: '#d32f2f',
+    color: 'white',
+    border: 'none',
+    cursor: 'pointer',
+  },
 };
 
 export default Course;

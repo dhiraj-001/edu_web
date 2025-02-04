@@ -20,7 +20,7 @@ const AdminLogin = () => {
 
     try {
       const response = await axios.post(
-        'https://mc-qweb-backend.vercel.app/user/adminlogin',
+        'http://localhost:5000/user/adminlogin',
         {
           email,
           password,

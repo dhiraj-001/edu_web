@@ -13,6 +13,10 @@ import Userprofile from './Component/Userprofile';
 import Addquation from './Component/AddQuation';
 import Course from './Component/Course';
 import Viewquationuser from './Component/ViewQuationUser';
+import Addsubject from './Component/AddSubject';
+import AddCoSubject from './Component/Addcosubject';
+import ViewSubjectPage from './Component/ViewSubject';
+import ViewCoSubject from './Component/ViewCosubject';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -31,11 +35,27 @@ function App() {
           <Route path="/adminlogin" element={<AdminLogin />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/userprofile" element={<Userprofile />} />
-          <Route path="/addquestionpage/:id" element={<Addquation />} />
+          <Route
+            path="/:course/:subject/:cosubject/quations/:courseId/:subjectId/:cosubjectId"
+            element={<Addquation />}
+          />
           <Route path="/course" element={<Course />} />
+          <Route
+            path="/:course/addsubject/:courseId"
+            element={<Addsubject />}
+          />
+          <Route
+            path="/:course/:subject/cosubject/:courseId/:subjectId"
+            element={<AddCoSubject />}
+          />
           <Route
             path="/coursequation/:categoryId"
             element={<Viewquationuser />}
+          />
+          <Route path="/viewsubject/:courseId" element={<ViewSubjectPage />} />
+          <Route
+            path="/viewcosubject/:courseId/:subjectId"
+            element={<ViewCoSubject />}
           />
         </Routes>
       </Router>

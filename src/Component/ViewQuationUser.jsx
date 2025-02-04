@@ -7,18 +7,20 @@ import {
   CardContent,
   Typography,
   CircularProgress,
+  Button,
 } from '@mui/material';
 import Cookies from 'js-cookie';
-import axios from 'axios'; // ✅ Import axios
+import axios from 'axios';
 
 const ViewQuestionUser = () => {
   const { categoryId } = useParams();
   const navigate = useNavigate();
-  console.log('Received categoryId:', categoryId); // Debugging
+  console.log('Received categoryId:', categoryId);
 
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedAnswers, setSelectedAnswers] = useState({}); // Stores user-selected answers
 
   useEffect(() => {
     const token = Cookies.get('auth_token');
@@ -28,7 +30,6 @@ const ViewQuestionUser = () => {
       return;
     }
 
-    // ✅ Verify token first
     const verifyToken = async () => {
       try {
         const response = await axios.post(
@@ -42,7 +43,6 @@ const ViewQuestionUser = () => {
           return;
         }
 
-        // ✅ If token is valid, fetch questions
         fetchQuestions();
       } catch (error) {
         console.error('Error verifying token:', error);
@@ -51,7 +51,6 @@ const ViewQuestionUser = () => {
       }
     };
 
-    // ✅ Fetch questions after token verification
     const fetchQuestions = async () => {
       try {
         console.log(
@@ -78,8 +77,18 @@ const ViewQuestionUser = () => {
       }
     };
 
-    verifyToken(); // ✅ Verify token on component mount
+    verifyToken();
   }, [categoryId, navigate]);
+
+  const handleAnswerSelection = (questionId, selectedOption, correctOption) => {
+    setSelectedAnswers((prev) => ({
+      ...prev,
+      [questionId]: {
+        selected: selectedOption,
+        isCorrect: selectedOption === correctOption,
+      },
+    }));
+  };
 
   if (loading) {
     return (
@@ -102,20 +111,13 @@ const ViewQuestionUser = () => {
         <Typography variant="h6" color="error">
           Error: {error}
         </Typography>
-        <button
+        <Button
+          variant="contained"
+          color="primary"
           onClick={() => window.location.reload()}
-          style={{
-            marginTop: '10px',
-            padding: '10px 20px',
-            backgroundColor: '#1976d2',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
         >
           Retry
-        </button>
+        </Button>
       </Container>
     );
   }
@@ -144,14 +146,58 @@ const ViewQuestionUser = () => {
                 >
                   <strong>Options:</strong>
                 </Typography>
-                <ul style={{ paddingLeft: '20px', margin: '5px 0' }}>
-                  {question.options.map((option, index) => (
-                    <li key={index}>{option}</li>
-                  ))}
-                </ul>
-                <Typography variant="body2" color="textSecondary">
-                  <strong>Correct Option:</strong> {question.correctOption}
-                </Typography>
+                {question.options.map((option, index) => {
+                  const isSelected =
+                    selectedAnswers[question._id]?.selected === option;
+                  const isCorrect = selectedAnswers[question._id]?.isCorrect;
+                  return (
+                    <Button
+                      key={index}
+                      variant="contained"
+                      style={{
+                        display: 'block',
+                        margin: '8px 0',
+                        width: '100%',
+                        textAlign: 'left',
+                        backgroundColor: isSelected
+                          ? isCorrect
+                            ? '#4CAF50' // Green for correct
+                            : '#F44336' // Red for incorrect
+                          : '#ffffff',
+                        color: isSelected ? 'white' : 'black',
+                        border: '1px solid #ccc',
+                        cursor: selectedAnswers[question._id]
+                          ? 'default'
+                          : 'pointer',
+                      }}
+                      disabled={!!selectedAnswers[question._id]}
+                      onClick={() =>
+                        handleAnswerSelection(
+                          question._id,
+                          option,
+                          question.correctOption
+                        )
+                      }
+                    >
+                      {option}
+                    </Button>
+                  );
+                })}
+                {selectedAnswers[question._id] && (
+                  <Typography
+                    variant="body2"
+                    style={{
+                      marginTop: '10px',
+                      color: selectedAnswers[question._id].isCorrect
+                        ? 'green'
+                        : 'red',
+                    }}
+                  >
+                    {selectedAnswers[question._id].isCorrect
+                      ? 'Correct Answer! ✅'
+                      : `Wrong! ❌ Correct: ${question.correctOption}`}
+                  </Typography>
+                )}
               </CardContent>
             </Card>
           </Grid>

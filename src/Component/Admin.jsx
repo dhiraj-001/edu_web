@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography, Divider, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Cookies from 'js-cookie'; // Import js-cookie for handling cookies
+import Cookies from 'js-cookie';
 
 const Admin = () => {
   const [selectedContent, setSelectedContent] = useState('');
@@ -23,17 +23,16 @@ const Admin = () => {
   }, [selectedContent]);
 
   const verifyToken = async () => {
-    const token = Cookies.get('admin_token'); // Get token from cookie
-
+    const token = Cookies.get('admin_token');
     if (!token) {
       setIsTokenValid(false);
-      navigate('/'); // Redirect to home page if no token
+      navigate('/');
       return;
     }
 
     try {
       const response = await axios.post(
-        'https://mc-qweb-backend.vercel.app/user/verify-tokenadmin', // Endpoint to verify token
+        'https://mc-qweb-backend.vercel.app/user/verify-tokenadmin',
         { token }
       );
 
@@ -41,12 +40,12 @@ const Admin = () => {
         setIsTokenValid(true);
       } else {
         setIsTokenValid(false);
-        navigate('/'); // Redirect to home page if token is invalid
+        navigate('/');
       }
     } catch (error) {
       console.error('Error verifying token:', error);
       setIsTokenValid(false);
-      navigate('/'); // Redirect to home page on error
+      navigate('/');
     }
   };
 
@@ -94,8 +93,9 @@ const Admin = () => {
     }
   };
 
-  const handleAddQuestion = (id) => {
-    navigate(`/addquestionpage/${id}`);
+  const handleViewSubjects = (courseId, coursename) => {
+    // Navigate to the page where you can view all subjects for the selected course
+    navigate(`/${coursename}/addsubject/${courseId}`);
   };
 
   return (
@@ -138,14 +138,18 @@ const Admin = () => {
                   <Typography>{item.name}</Typography>
                   <Box>
                     {selectedContent === 'course' && (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{ marginRight: '8px' }}
-                        onClick={() => handleAddQuestion(item._id)}
-                      >
-                        Add Question
-                      </Button>
+                      <>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          sx={{ marginRight: '8px' }}
+                          onClick={() =>
+                            handleViewSubjects(item._id, item.name)
+                          }
+                        >
+                          View Subjects
+                        </Button>
+                      </>
                     )}
                     <Button
                       variant="outlined"
