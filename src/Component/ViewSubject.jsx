@@ -24,7 +24,7 @@ const ViewSubjectPage = () => {
   const fetchSubjects = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/user/admin/subject/${courseId}`
+        `https://mc-qweb-backend.vercel.app/user/admin/subject/${courseId}`
       );
       setSubjects(response.data.subjects);
     } catch (err) {

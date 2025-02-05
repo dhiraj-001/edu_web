@@ -10,7 +10,7 @@ import Course from './Course';
 const Home = () => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div className="container">
         <div className="content">
           <h1>Multiple Choice Questions</h1>

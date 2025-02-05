@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Import FontAwesome CSS
 import axios from 'axios';
 import '../CSS/Header.css';
+import { Link, NavLink } from 'react-router-dom';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -56,15 +57,15 @@ const Header = () => {
 
       {/* Desktop/Nav Links */}
       <nav className={`nav-links ${menuOpen ? 'active' : ''}`}>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/event">Event</a>
-        <a href="/milestone">Milestone</a>
-        <a href="/course">Course</a>
+        <NavLink to="/">Home</NavLink>
+        <NavLink to="/about">About</NavLink>
+        <NavLink to="/event">Event</NavLink>
+        <NavLink to="/milestone">Milestone</NavLink>
+        <NavLink to="/course">Course</NavLink>
         {isLoggedIn ? (
           <>
             <button>
-              <a href="/userprofile">Profile</a>
+              <NavLink to="/userprofile">Profile</NavLink>
             </button>
             <button>
               <p
@@ -83,7 +84,7 @@ const Header = () => {
           </>
         ) : (
           <button>
-            <a href="/login">Login</a>
+            <NavLink to="/login">Login</NavLink>
           </button>
         )}
       </nav>
