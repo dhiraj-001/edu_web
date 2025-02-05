@@ -49,7 +49,7 @@ function App() {
             element={<AddCoSubject />}
           />
           <Route
-            path="/coursequation/:categoryId"
+            path="/coursequation/:courseId/:subjectId/:cosubjectId"
             element={<Viewquationuser />}
           />
           <Route path="/viewsubject/:courseId" element={<ViewSubjectPage />} />

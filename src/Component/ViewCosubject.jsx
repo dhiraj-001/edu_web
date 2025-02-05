@@ -20,16 +20,16 @@ const ViewCoSubject = () => {
 
   useEffect(() => {
     fetchSubjects();
-  }, []);
+  }, [courseId, subjectId]); // Added courseId and subjectId as dependencies
 
   const fetchSubjects = async () => {
     try {
       const response = await axios.get(
-        `https://mc-qweb-backend.vercel.app/user/admin/cosubject/${courseId}/${subjectId}`
+        `http://localhost:5000/user/admin/cosubject/${courseId}/${subjectId}`
       );
-      setSubjects(response.data.subjects);
+      setSubjects(response.data.cosubject);
     } catch (err) {
-      setError('Failed to fetch subjects');
+      setError(err.response?.data?.message || 'Failed to fetch subjects');
       console.error(err);
     } finally {
       setLoading(false);
@@ -63,16 +63,20 @@ const ViewCoSubject = () => {
                 }}
               >
                 <CardContent>
-                  <Typography variant="h6" fontWeight="bold">
-                    {subject.name}
-                  </Typography>
-                  <Typography variant="body2">{subject.description}</Typography>
+                  <Link
+                    to={`/coursequation/${courseId}/${subjectId}/${subject._id}`}
+                  >
+                    <Typography variant="h6" fontWeight="bold">
+                      {subject.name}
+                    </Typography>
+                    {/* <Typography variant="body2">{subject.description}</Typography> */}
+                  </Link>
                 </CardContent>
               </Card>
             </Grid>
           ))
         ) : (
-          <Typography>No subjects found</Typography> // Message when there are no subjects
+          <Typography>No subjects found</Typography>
         )}
       </Grid>
     </Box>

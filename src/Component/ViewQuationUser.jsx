@@ -13,9 +13,9 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 
 const ViewQuestionUser = () => {
-  const { categoryId } = useParams();
+  const { courseId, subjectId, cosubjectId } = useParams();
   const navigate = useNavigate();
-  console.log('Received categoryId:', categoryId);
+  // console.log('Received categoryId:', categoryId);
 
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,22 +53,17 @@ const ViewQuestionUser = () => {
 
     const fetchQuestions = async () => {
       try {
-        console.log(
-          'Fetching from:',
-          `https://mc-qweb-backend.vercel.app/user/course/${categoryId}`
-        );
         const response = await axios.get(
-          `https://mc-qweb-backend.vercel.app/user/course/${categoryId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
+          `https://mc-qweb-backend.vercel.app/user/admin/quations/${courseId}/${subjectId}/${cosubjectId}`
         );
-
-        if (response.status !== 200)
-          throw new Error('Failed to fetch questions');
-
-        console.log('Fetched questions:', response.data);
-        setQuestions(response.data.questions);
+    
+        if (response.status !== 200) throw new Error('Failed to fetch questions');
+    
+        // console.log('Fetched questions:', response.data);
+    
+        // Check if questions exist
+        const fetchedQuestions = response.data.quations || [];  // Use empty array as fallback
+        setQuestions(fetchedQuestions);
       } catch (error) {
         console.error('Error fetching questions:', error);
         setError(error.message);
@@ -76,9 +71,10 @@ const ViewQuestionUser = () => {
         setLoading(false);
       }
     };
+    
 
     verifyToken();
-  }, [categoryId, navigate]);
+  }, [courseId, navigate]);
 
   const handleAnswerSelection = (questionId, selectedOption, correctOption) => {
     setSelectedAnswers((prev) => ({
