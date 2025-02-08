@@ -78,6 +78,15 @@ const Course = () => {
           >
             <Card style={styles.courseCard}>
               <CardContent style={styles.cardContent}>
+                {/* Course Image */}
+                <img
+                  src={`/src/ImageCourse/${course.image}`}
+                  height={100}
+                  width={100}
+                  alt={course.name}
+                  style={styles.courseImage}
+                />
+                {/* Course Name */}
                 <Typography
                   variant="h5"
                   component="div"
@@ -121,24 +130,34 @@ const styles = {
     justifyContent: 'center', // Centers individual grid items
   },
   courseCard: {
-    width: 250, // Fixed width to keep it centered
-    height: 100,
+    width: 200, // Fixed width to keep it centered
+    height: 200,
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
     backgroundColor: '#f5f5f5',
     transition: 'transform 0.2s ease-in-out',
+    padding: 10,
   },
   cardContent: {
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
     height: '100%',
   },
+  courseImage: {
+    width: '100%', // Full width of the card
+    height: 120, // Fixed height
+    objectFit: 'cover', // Ensures the image fits well
+    borderRadius: 5, // Rounded corners for the image
+    marginBottom: 10, // Space between image and text
+  },
   courseName: {
-    fontSize: '1.6rem',
+    fontSize: '1.4rem',
     fontWeight: 'bold',
     textAlign: 'center',
   },

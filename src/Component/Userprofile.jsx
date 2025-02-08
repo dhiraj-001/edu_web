@@ -7,7 +7,7 @@ import Course from './Course';
 const Userprofile = () => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div className="dashboard-container">
         <div className="content1">
           <div className="profile-section">

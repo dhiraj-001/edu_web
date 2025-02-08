@@ -7,7 +7,9 @@ import Cookies from 'js-cookie';
 const Admin = () => {
   const [selectedContent, setSelectedContent] = useState('');
   const [isAdding, setIsAdding] = useState(false);
+  const [courses, setCourses] = useState([]);
   const [newItem, setNewItem] = useState('');
+  const [image, setimage] = useState();
   const [data, setData] = useState([]);
   const [isTokenValid, setIsTokenValid] = useState(true);
   const navigate = useNavigate();
@@ -65,31 +67,53 @@ const Admin = () => {
     setIsAdding(false);
     setNewItem('');
   };
+  const onoutputchange = (e) => {
+    console.log(e.target.files[0]);
+    setimage(e.target.files[0]);
+  };
+  const handleAddNew = async (e) => {
+    e.preventDefault(); // Prevent default form submission
 
-  const handleAddNew = async () => {
-    if (newItem.trim()) {
-      try {
-        await axios.post(
-          `https://mc-qweb-backend.vercel.app/user/admin/${selectedContent}`,
-          { name: newItem }
-        );
-        setNewItem('');
-        setIsAdding(false);
-        fetchData();
-      } catch (error) {
-        console.error('Error adding item:', error);
-      }
+    if (!image) {
+      console.error('No file selected');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', image);
+    formData.append('name', newItem);
+    console.log(formData);
+
+    try {
+      await axios.post(
+        `http://localhost:5000/user/admin/add-course`,
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+      setIsAdding(false);
+      setimage(null);
+      fetchData();
+    } catch (error) {
+      console.error('Error adding item:', error);
     }
   };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(
-        `https://mc-qweb-backend.vercel.app/user/admin/${selectedContent}/${id}`
+      const response = await fetch(
+        `http://localhost:5000/user/admin/delate-course/${id}`,
+        {
+          method: 'DELETE',
+        }
       );
-      fetchData();
+      if (!response.ok) {
+        throw new Error('Failed to delete course');
+        console.log(response.error);
+      }
+      // Remove the deleted course from the state
+      setCourses(courses.filter((course) => course._id !== id));
     } catch (error) {
-      console.error('Error deleting item:', error);
+      alert(error.message);
     }
   };
 
@@ -174,23 +198,14 @@ const Admin = () => {
                 Add New {selectedContent}
               </Button>
             ) : (
-              <Box>
-                <TextField
-                  label={`New ${selectedContent} Name`}
-                  variant="outlined"
-                  fullWidth
-                  value={newItem}
+              <form onSubmit={handleAddNew} encType="multipart/form-data">
+                <input
+                  type="text"
                   onChange={(e) => setNewItem(e.target.value)}
-                  sx={{ marginTop: '16px' }}
                 />
-                <Button
-                  variant="contained"
-                  sx={{ marginTop: '16px' }}
-                  onClick={handleAddNew}
-                >
-                  Save {selectedContent}
-                </Button>
-              </Box>
+                <input type="file" onChange={onoutputchange} />
+                <button type="submit">Add</button>
+              </form>
             )}
           </div>
         )}
