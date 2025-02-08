@@ -86,7 +86,7 @@ const Admin = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/user/admin/add-course`,
+        `https://mc-qweb-backend.vercel.app/user/admin/add-course`,
         formData,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
@@ -101,7 +101,7 @@ const Admin = () => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/user/admin/delate-course/${id}`,
+        `https://mc-qweb-backend.vercel.app/user/admin/delate-course/${id}`,
         {
           method: 'DELETE',
         }

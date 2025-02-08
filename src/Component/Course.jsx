@@ -93,7 +93,7 @@ const Course = () => {
                   style={styles.courseName}
                 >
                   <Link
-                    to={`/viewsubject/${course._id}`}
+                    to={`/src/viewsubject/${course._id}`}
                     style={styles.courseLink}
                   >
                     {course.name}
