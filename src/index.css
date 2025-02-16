@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 * {
   margin: 0;
 }
@@ -6,4 +8,8 @@ a {
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s ease;
+  
+}
+body{
+  background-color: #c7b198 !important;
 }

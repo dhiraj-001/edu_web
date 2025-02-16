@@ -13,7 +13,7 @@ const Home = () => {
       {/* <Header /> */}
       <div className="container">
         <div className="content">
-          <h1>Multiple Choice Questions</h1>
+          <h1>Explore <i>Multiple Choice Questions</i></h1>
           <h1>With Us.</h1>
           <p>
             MCQweb is an interactive online platform that enhances learning

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
+import Marquee from "react-fast-marquee";
 import axios from 'axios';
 import {
   Box,
@@ -50,31 +50,39 @@ const ViewCoSubject = () => {
 
       <Grid container spacing={3} justifyContent="center">
         {Array.isArray(subjects) && subjects.length > 0 ? (
-          subjects.map((subject, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-              <Card
-                sx={{
-                  borderRadius: '12px',
-                  boxShadow: 3,
-                  transition: '0.3s',
-                  '&:hover': { boxShadow: 6 },
-                  background: 'linear-gradient(135deg, #83a4d4, #b6fbff)',
-                  color: '#fff',
-                }}
+          <Marquee gradient={false}
+          speed={50}
+          pauseOnHover={true}
+          className="mask-gradient-to-right">
+{
+       subjects.map((subject, index) => (
+        
+          <Card
+            sx={{
+              borderRadius: '12px',
+              boxShadow: 3,
+              transition: '0.3s',
+              '&:hover': { boxShadow: 6 },
+              background: 'linear-gradient(135deg, #83a4d4, #b6fbff)',
+              color: '#fff',
+            }}
+          >
+            <CardContent>
+              <Link
+                to={`/coursequation/${courseId}/${subjectId}/${subject._id}`}
               >
-                <CardContent>
-                  <Link
-                    to={`/coursequation/${courseId}/${subjectId}/${subject._id}`}
-                  >
-                    <Typography variant="h6" fontWeight="bold">
-                      {subject.name}
-                    </Typography>
-                    {/* <Typography variant="body2">{subject.description}</Typography> */}
-                  </Link>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))
+                <Typography variant="h6" fontWeight="bold">
+                  {subject.name}
+                </Typography>
+                {/* <Typography variant="body2">{subject.description}</Typography> */}
+              </Link>
+            </CardContent>
+          </Card>
+        
+      ))
+}
+          </Marquee> 
+     
         ) : (
           <Typography>No subjects found</Typography>
         )}

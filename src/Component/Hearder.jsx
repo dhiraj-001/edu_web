@@ -4,7 +4,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css'; // Import FontAwesome CS
 import axios from 'axios';
 import '../CSS/Header.css';
 import { Link, NavLink } from 'react-router-dom';
-
+import Dropdown from 'react-bootstrap/Dropdown';
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -57,6 +57,17 @@ const Header = () => {
 
       {/* Desktop/Nav Links */}
       <nav className={`nav-links ${menuOpen ? 'active' : ''}`}>
+      <Dropdown className='dropdown '>
+      <Dropdown.Toggle variant="success" id="dropdown-basic">
+       Courses
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu>
+        <Dropdown.Item href="#/action-1">SSC</Dropdown.Item>
+        <Dropdown.Item href="#/action-2">ADRE</Dropdown.Item>
+        <Dropdown.Item href="#/action-3">APSC</Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/about">About</NavLink>
         <NavLink to="/event">Event</NavLink>

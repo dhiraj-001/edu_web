@@ -5,7 +5,7 @@
   justify-content: space-between;
   gap: 30px;
   padding: 5%;
-  background-color: #f9f9f9;
+ 
 }
 
 .content {
@@ -14,33 +14,56 @@
 
 h1 {
   font-size: 2.5rem;
-  color: #31473a;
+  color: #596e79;
 }
 
 h2 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  color: #31473a;
+  color: #596e79;
 }
 
 p {
   margin-top: 4%;
   font-size: 1.2rem;
   line-height: 1.6;
-  color: #777;
+  color: #596e79;
+}
+button {
+  --c: #fff;
+ /* text color */
+  background: linear-gradient(90deg, #0000 33%, #fff5, #0000 67%) var(--_p,100%)/300% no-repeat,
+    #979898;
+ /* background color */
+  color: #0000;
+  border: none;
+  transform: perspective(500px) rotateY(calc(20deg*var(--_i,-1)));
+  text-shadow: calc(var(--_i,-1)* 0.08em) -.01em 0   var(--c),
+    calc(var(--_i,-1)*-0.08em)  .01em 2px #0004;
+  outline-offset: .1em;
+  transition: 0.3s;
 }
 
-.button {
-  margin-top: 4%;
-  display: inline-block;
-  background-color: #31473a;
-  padding: 1rem 2rem;
-  border: none;
-  color: white;
-  font-weight: 500;
-  font-size: larger;
-  border-radius: 10px;
+button:hover,
+button:focus-visible {
+  --_p: 0%;
+  --_i: 1;
+}
+
+button:active {
+  text-shadow: none;
+  color: var(--c);
+  box-shadow: inset 0 0 9e9q #0005;
+  transition: 0s;
+}
+
+button {
+  font-family: system-ui, sans-serif;
+  font-weight: bold;
+  font-size: 2rem;
+  margin: 0;
   cursor: pointer;
+  padding: .1em .3em;
 }
 
 .image-container {
