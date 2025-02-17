@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import '@fortawesome/fontawesome-free/css/all.min.css'; // Import FontAwesome CSS
 import axios from 'axios';
 import '../CSS/Header.css';
+
 import { Link, NavLink } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 const Header = () => {
@@ -70,7 +71,7 @@ const Header = () => {
     </Dropdown>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/About">About</NavLink>
-        <NavLink to="/event">Event</NavLink>
+        <NavLink to="/Event">Event</NavLink>
       
         {isLoggedIn ? (
           <>
