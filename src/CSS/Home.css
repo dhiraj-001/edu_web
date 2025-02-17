@@ -14,28 +14,28 @@
 
 h1 {
   font-size: 2.5rem;
-  color: #596e79;
+  color: #272343;
 }
 
 h2 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  color: #596e79;
+  color: #272343;
 }
 
 p {
   margin-top: 4%;
   font-size: 1.2rem;
   line-height: 1.6;
-  color: #596e79;
+  color: black;
 }
 button {
   --c: #fff;
  /* text color */
-  background: linear-gradient(90deg, #0000 33%, #fff5, #0000 67%) var(--_p,100%)/300% no-repeat,
-    #979898;
+  background: linear-gradient(90deg, #272343 33%, #fff5, #0000 67%) var(--_p,100%)/300% no-repeat,
+    #272343;
  /* background color */
-  color: #0000;
+  color: #ffffff;
   border: none;
   transform: perspective(500px) rotateY(calc(20deg*var(--_i,-1)));
   text-shadow: calc(var(--_i,-1)* 0.08em) -.01em 0   var(--c),
