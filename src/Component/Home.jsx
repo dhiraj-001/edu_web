@@ -29,9 +29,9 @@ const Home = () => {
           <img src={benner} />
         </div>
       </div>
-      <Course />
+      
       <Event />
-      <Milestone />
+      <Course />
       <Footer />
     </>
   );
