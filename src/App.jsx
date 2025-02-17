@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Signup from './Component/Signup';
+import About from './Component/About';
 import Header from './Component/Hearder';
 import Event from './Component/Event';
 import Login from './Component/Login';
@@ -30,6 +31,7 @@ function App() {
           <Route path="/event" element={<Event />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/about" element={<About />} />
           <Route path="/milestone" element={<Milestone />} />
           <Route path="/footer" element={<Footer />} />
           <Route path="/adminlogin" element={<AdminLogin />} />
