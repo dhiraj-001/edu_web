@@ -1,6 +1,6 @@
 /* General Header Styling */
 .header {
-  background-color: #979898;
+  background-color: #ffffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,7 +11,7 @@
 .logo h1 {
   font-size: 2.5rem;
   font-weight: bold;
-  color:white;
+  color:#272343;
 }
 
 .menu-icon {
@@ -31,13 +31,13 @@
 .nav-links a {
   font-weight: 650;
   font-size: 1.3rem;
-  color: black;
+  color: #272343;
   text-decoration: none;
 }
 .nav-links button {
 
   font-size: 1.3rem;
-  background-color: #31473a;
+  background-color: #272343;
   text-decoration: none;
   border-radius: 10px;
 }
