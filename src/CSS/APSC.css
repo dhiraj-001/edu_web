@@ -1,0 +1,50 @@
+.EXAM {
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center;
+}
+
+.box1 {
+  width: 30%;
+  height: 20vh;
+  margin: 10px;
+  padding: 40px;
+  background-color: #272343;
+  color:#ffffff;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.EXAM .details {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+.details{
+  width: 100%;
+
+  background-color: rgb(204, 187, 187);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.subject{
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center;
+
+}
+.sub{
+  width: auto;
+}
+.sub:hover{
+  color: white;
+  background-color: #272343;
+}
