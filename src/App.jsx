@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Signup from './Component/Signup';
 import About from './Component/About';
 import Header from './Component/Hearder';
+import SSC from './Component/SSC';
+import ADRE from './Component/ADRE';
+import APSC from './Component/APSC';
 import Event from './Component/Event';
 import Login from './Component/Login';
 import Home from './Component/Home';
@@ -29,6 +32,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/event" element={<Event />} />
+          <Route path="/SSC" element={<SSC />} />
+          <Route path="/ADRE" element={<ADRE />} />
+          <Route path="/APSC" element={<APSC />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
