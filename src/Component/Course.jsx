@@ -1,13 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  CircularProgress,
-  Container,
-} from '@mui/material';
 
 const Course = () => {
   const [courses, setCourses] = useState([]);
@@ -39,72 +30,54 @@ const Course = () => {
   // Display loading or error messages
   if (loading) {
     return (
-      <Container style={styles.loadingContainer}>
-        <CircularProgress />
-      </Container>
+      <div style={styles.loadingContainer}>
+        <div>Loading...</div>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <Container style={styles.errorContainer}>
-        <Typography variant="h6" color="error">
-          Error: {error}
-        </Typography>
+      <div style={styles.errorContainer}>
+        <div>Error: {error}</div>
         <button
           style={styles.retryButton}
           onClick={() => window.location.reload()}
         >
           Retry
         </button>
-      </Container>
+      </div>
     );
   }
 
   return (
-    <Container style={styles.courseContainer}>
+    <div style={styles.courseContainer}>
       <h1 style={styles.title}>Courses</h1>
 
       {/* Centering the course list properly */}
-      <Grid container spacing={3} style={styles.centerGrid}>
+      <div style={styles.centerGrid}>
         {courses.map((course) => (
-          <Grid
-            item
-            key={course._id}
-            xs={12}
-            sm={6}
-            md={4}
-            style={styles.centerGridItem}
-          >
-            <Card style={styles.courseCard}>
-              <CardContent style={styles.cardContent}>
+          <div key={course._id} style={styles.centerGridItem}>
+            <a href={course.name === 'SSC' ? '/SSC' : '/ADRE'} style={styles.courseCard}>
+              <div style={styles.cardContent}>
                 {/* Course Image */}
                 <img
                   src={`/src/ImageCourse/${course.image}`}
-                  height={100}
-                  width={100}
+                  height={'35%'}
+                  width={'20%'}
                   alt={course.name}
                   style={styles.courseImage}
                 />
                 {/* Course Name */}
-                <Typography
-                  variant="h5"
-                  component="div"
-                  style={styles.courseName}
-                >
-                  <Link
-                    to={`/src/viewsubject/${course._id}`}
-                    style={styles.courseLink}
-                  >
-                    {course.name}
-                  </Link>
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+                <div style={styles.courseName}>
+                  {course.name}
+                </div>
+              </div>
+            </a>
+          </div>
         ))}
-      </Grid>
-    </Container>
+      </div>
+    </div>
   );
 };
 
@@ -124,10 +97,12 @@ const styles = {
   centerGrid: {
     display: 'flex',
     justifyContent: 'center', // Centers the entire grid
+    flexWrap: 'wrap',
   },
   centerGridItem: {
     display: 'flex',
     justifyContent: 'center', // Centers individual grid items
+    margin: '10px',
   },
   courseCard: {
     width: 200, // Fixed width to keep it centered
@@ -140,6 +115,8 @@ const styles = {
     backgroundColor: '#f5f5f5',
     transition: 'transform 0.2s ease-in-out',
     padding: 10,
+    textDecoration: 'none',
+    color: 'black',
   },
   cardContent: {
     display: 'flex',
@@ -160,10 +137,6 @@ const styles = {
     fontSize: '1.4rem',
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  courseLink: {
-    textDecoration: 'none',
-    color: '#333',
   },
   loadingContainer: {
     display: 'flex',
