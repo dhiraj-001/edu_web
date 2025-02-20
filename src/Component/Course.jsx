@@ -105,7 +105,7 @@ const styles = {
     margin: '10px',
   },
   courseCard: {
-    width: 200, // Fixed width to keep it centered
+    width: 150, // Fixed width to keep it centered
     height: 200,
     display: 'flex',
     flexDirection: 'column',
