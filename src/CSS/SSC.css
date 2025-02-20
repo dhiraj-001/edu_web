@@ -1,50 +1,100 @@
-.EXAM {
-  text-align: center;
-  padding: 20px;
-  display: flex;
-  flex-direction: column; 
-  justify-content: center; 
-  align-items: center;
+import React, { useState } from 'react';
+import '../CSS/SSC.css';
+
+function SSC() {
+  const [activeSection, setActiveSection] = useState('');
+  const [activeTopic, setActiveTopic] = useState('');
+  const [activeMockTest, setActiveMockTest] = useState('');
+  const [activeQuestionPaper, setActiveQuestionPaper] = useState('');
+  const [detailsContent, setDetailsContent] = useState('');
+
+  const handleSectionClick = (section) => {
+    setActiveSection(section);
+    setActiveTopic('');
+    setActiveMockTest('');
+    setActiveQuestionPaper('');
+    setDetailsContent('');
+  };
+
+  const handleTopicClick = (topic) => {
+    setActiveTopic(topic);
+    setDetailsContent(`Details about ${topic}`);
+  };
+
+  const handleMockTestClick = (mockTest) => {
+    setActiveMockTest(mockTest);
+    setDetailsContent(`Details about ${mockTest}`);
+  };
+
+  const handleQuestionPaperClick = (year) => {
+    setActiveQuestionPaper(year);
+    setDetailsContent(`Details about Question Paper ${year}`);
+  };
+
+  const renderSection = () => {
+    switch (activeSection) {
+      case 'topics':
+        return (
+          <div className="subject">
+            {activeTopic === '' ? (
+              <>
+                <div className="sub" onClick={() => handleTopicClick('Math')}><h3>Mathematics</h3></div>
+                <div className="sub" onClick={() => handleTopicClick('Science')}><h3>Science</h3></div>
+                <div className="sub" onClick={() => handleTopicClick('History')}><h3>History</h3></div>
+              </>
+            ) : (
+              <div className="details">{detailsContent}</div>
+            )}
+          </div>
+        );
+      case 'mockTest':
+        return (
+          <div className="subject">
+            {activeMockTest === '' ? (
+              <>
+                <div className="sub" onClick={() => handleMockTestClick('Mock Test 1')}><h3>Mock Test 1</h3></div>
+                <div className="sub" onClick={() => handleMockTestClick('Mock Test 2')}><h3>Mock Test 2</h3></div>
+                <div className="sub" onClick={() => handleMockTestClick('Mock Test 3')}><h3>Mock Test 3</h3></div>
+              </>
+            ) : (
+              <div className="details">{detailsContent}</div>
+            )}
+          </div>
+        );
+      case 'previousYear':
+        return (
+          <div className="subject">
+            {activeQuestionPaper === '' ? (
+              <>
+                {[2020, 2021, 2022, 2023, 2024, 2025].map((year) => (
+                  <div className="sub" key={year} onClick={() => handleQuestionPaperClick(year)}>
+                    <h3>Question Paper {year}</h3>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div className="details">{detailsContent}</div>
+            )}
+          </div>
+        );
+      default:
+        return <div>Click on a section to see details</div>;
+    }
+  };
+
+  return (
+    <div className="EXAM">
+      <div className={`box1 ${activeSection === 'topics' ? 'active' : ''}`} onClick={() => handleSectionClick('topics')}>
+        <h2>DPP</h2>{activeSection === 'topics' && renderSection()}
+      </div>
+      <div className={`box1 ${activeSection === 'mockTest' ? 'active' : ''}`} onClick={() => handleSectionClick('mockTest')}>
+        <h2>Mock Test</h2>{activeSection === 'mockTest' && renderSection()}
+      </div>
+      <div className={`box1 ${activeSection === 'previousYear' ? 'active' : ''}`} onClick={() => handleSectionClick('previousYear')}>
+        <h2>PYQ</h2>{activeSection === 'previousYear' && renderSection()}
+      </div>
+    </div>
+  );
 }
 
-.box1 {
-  width: 30%;
-  height: 20vh;
-  margin: 10px;
-  padding: 40px;
-  background-color: #272343;
-  color:#ffffff;
-  border: 1px solid #ccc;
-  cursor: pointer;
-}
-
-.EXAM .details {
-  margin-top: 20px;
-  padding: 20px;
-  border: 1px solid #ccc;
-}
-.details{
-  width: 100%;
-
-  background-color: rgb(204, 187, 187);
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.subject{
-  text-align: center;
-  padding: 20px;
-  display: flex;
-  flex-direction: column; 
-  justify-content: center; 
-  align-items: center;
-
-}
-.sub{
-  width: auto;
-}
-.sub:hover{
-  color: white;
-  background-color: #272343;
-}
+export default SSC;
