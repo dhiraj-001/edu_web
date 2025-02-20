@@ -1,100 +1,73 @@
-import React, { useState } from 'react';
-import '../CSS/SSC.css';
-
-function SSC() {
-  const [activeSection, setActiveSection] = useState('');
-  const [activeTopic, setActiveTopic] = useState('');
-  const [activeMockTest, setActiveMockTest] = useState('');
-  const [activeQuestionPaper, setActiveQuestionPaper] = useState('');
-  const [detailsContent, setDetailsContent] = useState('');
-
-  const handleSectionClick = (section) => {
-    setActiveSection(section);
-    setActiveTopic('');
-    setActiveMockTest('');
-    setActiveQuestionPaper('');
-    setDetailsContent('');
-  };
-
-  const handleTopicClick = (topic) => {
-    setActiveTopic(topic);
-    setDetailsContent(`Details about ${topic}`);
-  };
-
-  const handleMockTestClick = (mockTest) => {
-    setActiveMockTest(mockTest);
-    setDetailsContent(`Details about ${mockTest}`);
-  };
-
-  const handleQuestionPaperClick = (year) => {
-    setActiveQuestionPaper(year);
-    setDetailsContent(`Details about Question Paper ${year}`);
-  };
-
-  const renderSection = () => {
-    switch (activeSection) {
-      case 'topics':
-        return (
-          <div className="subject">
-            {activeTopic === '' ? (
-              <>
-                <div className="sub" onClick={() => handleTopicClick('Math')}><h3>Mathematics</h3></div>
-                <div className="sub" onClick={() => handleTopicClick('Science')}><h3>Science</h3></div>
-                <div className="sub" onClick={() => handleTopicClick('History')}><h3>History</h3></div>
-              </>
-            ) : (
-              <div className="details">{detailsContent}</div>
-            )}
-          </div>
-        );
-      case 'mockTest':
-        return (
-          <div className="subject">
-            {activeMockTest === '' ? (
-              <>
-                <div className="sub" onClick={() => handleMockTestClick('Mock Test 1')}><h3>Mock Test 1</h3></div>
-                <div className="sub" onClick={() => handleMockTestClick('Mock Test 2')}><h3>Mock Test 2</h3></div>
-                <div className="sub" onClick={() => handleMockTestClick('Mock Test 3')}><h3>Mock Test 3</h3></div>
-              </>
-            ) : (
-              <div className="details">{detailsContent}</div>
-            )}
-          </div>
-        );
-      case 'previousYear':
-        return (
-          <div className="subject">
-            {activeQuestionPaper === '' ? (
-              <>
-                {[2020, 2021, 2022, 2023, 2024, 2025].map((year) => (
-                  <div className="sub" key={year} onClick={() => handleQuestionPaperClick(year)}>
-                    <h3>Question Paper {year}</h3>
-                  </div>
-                ))}
-              </>
-            ) : (
-              <div className="details">{detailsContent}</div>
-            )}
-          </div>
-        );
-      default:
-        return <div>Click on a section to see details</div>;
-    }
-  };
-
-  return (
-    <div className="EXAM">
-      <div className={`box1 ${activeSection === 'topics' ? 'active' : ''}`} onClick={() => handleSectionClick('topics')}>
-        <h2>DPP</h2>{activeSection === 'topics' && renderSection()}
-      </div>
-      <div className={`box1 ${activeSection === 'mockTest' ? 'active' : ''}`} onClick={() => handleSectionClick('mockTest')}>
-        <h2>Mock Test</h2>{activeSection === 'mockTest' && renderSection()}
-      </div>
-      <div className={`box1 ${activeSection === 'previousYear' ? 'active' : ''}`} onClick={() => handleSectionClick('previousYear')}>
-        <h2>PYQ</h2>{activeSection === 'previousYear' && renderSection()}
-      </div>
-    </div>
-  );
+.EXAM {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-export default SSC;
+.box1 {
+  width: 90% !important;
+  padding: 8px !important;
+  background-color: #272343;
+  color: white;
+  margin: 10px 0;
+  margin-top: 65px !important;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.box1 h2 {
+  display: flex;
+  margin-top: 0;
+  align-items: center;
+}
+
+.box1.active {
+  width: 100%;
+  border: none;
+  background-color: white;
+  color: black;
+}
+
+.subject {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.sub {
+  width: 90%; 
+  padding: 20px;
+  margin: 5px 0;
+  border: none;
+  box-sizing:border-box;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sub:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.details {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+
+@media (min-width: 768px) {
+  .box1 {
+    width: 10% !important;
+    margin-top: 69px !important;
+  }
+
+  .sub {
+    width: 100% ; 
+  }
+}
