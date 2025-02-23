@@ -6,6 +6,7 @@ import Header from './Component/Hearder';
 import SSC from './Component/SSC';
 import ADRE from './Component/ADRE';
 import APSC from './Component/APSC';
+
 import Event from './Component/Event';
 import Login from './Component/Login';
 import Home from './Component/Home';
@@ -15,6 +16,7 @@ import AdminLogin from './Component/AdminLogin';
 import Admin from './Component/Admin';
 import Userprofile from './Component/Userprofile';
 import Addquation from './Component/AddQuation';
+import QuizPage from './Component/QuizPage';
 import Course from './Component/Course';
 import Viewquationuser from './Component/ViewQuationUser';
 import Addsubject from './Component/AddSubject';
@@ -35,11 +37,14 @@ function App() {
           <Route path="/SSC" element={<SSC />} />
           <Route path="/ADRE" element={<ADRE />} />
           <Route path="/APSC" element={<APSC />} />
+          <Route path="/addqsn" element={<addqsn />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
+          
           <Route path="/milestone" element={<Milestone />} />
           <Route path="/footer" element={<Footer />} />
+          <Route path="/QuizPage" element={<QuizPage />} />
           <Route path="/adminlogin" element={<AdminLogin />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/userprofile" element={<Userprofile />} />
