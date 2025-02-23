@@ -9,7 +9,7 @@ function SSC() {
   const [detailsContent, setDetailsContent] = useState('');
 
   const handleSectionClick = (section) => {
-    setActiveSection(section);
+    setActiveSection((prevSection) => (prevSection === section ? '' : section));
     setActiveTopic('');
     setActiveMockTest('');
     setActiveQuestionPaper('');
@@ -38,9 +38,15 @@ function SSC() {
           <div className="subject">
             {activeTopic === '' ? (
               <>
-                <div className="sub" onClick={() => handleTopicClick('Math')}><h3>Mathematics</h3></div>
-                <div className="sub" onClick={() => handleTopicClick('Science')}><h3>Science</h3></div>
-                <div className="sub" onClick={() => handleTopicClick('History')}><h3>History</h3></div>
+                <div className="sub" onClick={() => handleTopicClick('Math')}>
+                  <a href='/QuizPage'><h3>Mathematics</h3></a>
+                </div>
+                <div className="sub" onClick={() => handleTopicClick('Science')}>
+                  <a href='/QuizPage'><h3>Science</h3></a>
+                </div>
+                <div className="sub" onClick={() => handleTopicClick('History')}>
+                  <a href='/QuizPage'><h3>History</h3></a>
+                </div>
               </>
             ) : (
               <div className="details">{detailsContent}</div>
@@ -52,9 +58,15 @@ function SSC() {
           <div className="subject">
             {activeMockTest === '' ? (
               <>
-                <div className="sub" onClick={() => handleMockTestClick('Mock Test 1')}><h3>Mock Test 1</h3></div>
-                <div className="sub" onClick={() => handleMockTestClick('Mock Test 2')}><h3>Mock Test 2</h3></div>
-                <div className="sub" onClick={() => handleMockTestClick('Mock Test 3')}><h3>Mock Test 3</h3></div>
+                <div className="sub" onClick={() => handleMockTestClick('Mock Test 1')}>
+                  <a href='/QuizPage'><h3>Mock Test 1</h3></a>
+                </div>
+                <div className="sub" onClick={() => handleMockTestClick('Mock Test 2')}>
+                  <a href='/QuizPage'><h3>Mock Test 2</h3></a>
+                </div>
+                <div className="sub" onClick={() => handleMockTestClick('Mock Test 3')}>
+                  <a href='/QuizPage'><h3>Mock Test 3</h3></a>
+                </div>
               </>
             ) : (
               <div className="details">{detailsContent}</div>
@@ -67,8 +79,10 @@ function SSC() {
             {activeQuestionPaper === '' ? (
               <>
                 {[2020, 2021, 2022, 2023, 2024, 2025].map((year) => (
-                  <div className="sub" key={year} onClick={() => handleQuestionPaperClick(year)}>
+                  <div className="sub" key={year}>
                     <h3>Question Paper {year}</h3>
+                    <a href={`/path/to/download/${year}`}><button className='butn'>Download</button></a>
+                    <a href={`/PYQ/${year}`}><button className='butn'>Solve it</button></a>
                   </div>
                 ))}
               </>
